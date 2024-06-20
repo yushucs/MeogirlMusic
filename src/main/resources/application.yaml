@@ -2,13 +2,13 @@ spring:
   application:
     name: MeogirlMusic
   datasource:
-    url: jdbc:mysql://django.mysql.polardb.rds.aliyuncs.com:3306/music?serverTimezone=Asia/Shanghai
+    url: jdbc:mysql://django.mysql.polardb.rds.aliyuncs.com:3306/meogirlmusic_dev?serverTimezone=Asia/Shanghai
     username: msql
     password: aEtM2Z63!xA2YRs
     driver-class-name: com.mysql.jdbc.Driver
 mybatis-plus:
-  mapper-locations: classpath:/mapper/*.xml  # 可选，指定XML映射文件位置
-  type-aliases-package: com.example.meogirlmusic.entity  # 可选，指定实体类所在包
+  mapper-locations: classpath:/mapper/*.xml               # 可选，指定XML映射文件位置
+  type-aliases-package: com.example.meogirlmusic.entity   # 可选，指定实体类所在包
   configuration:
     map-underscore-to-camel-case: true
 server:
