@@ -1,11 +1,8 @@
 package com.example.meogirlmusic.common.utils;
 
-import java.util.HashMap;
-import java.util.Map;
 
-/**
- * ThreadLocal 工具类
- */
+
+
 @SuppressWarnings("all")
 public class ThreadLocalUtil {
     //提供ThreadLocal对象,
