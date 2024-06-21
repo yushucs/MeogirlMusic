@@ -19,3 +19,9 @@ mybatis-plus:
     map-underscore-to-camel-case: true
 server:
   port: 8080
+
+oss:
+  endpoint: https://oss-cn-chengdu.aliyuncs.com
+  access-key-id: xxxx
+  access-key-secret: xxxx
+  bucket-name: supengcs
