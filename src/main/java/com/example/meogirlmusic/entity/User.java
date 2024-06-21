@@ -23,6 +23,12 @@ public class User {
     private String email;
     // 用户密码
     private String password;
+    // 性别
+    private String gender;
+    // avatar
+    private String avatar;
+    // 用户介绍
+    private String introduction;
     // 创建日期
     private LocalDateTime createTime;
     // 更新日期
