@@ -13,8 +13,8 @@ import java.io.InputStream;
 
 public class AliOssUtil {
 
-    private static final String accessKeyId = "LTAI5tJQpybZ6MQhGJ6E66Ls";
-    private static final String accessKeySecret = "EHykbAkKM5D2caqYptXl8mCV6EuGD9";
+    private static final String accessKeyId = "xxx";
+    private static final String accessKeySecret = "xxx";
     private static final String bucketName = "supengcs";
     private static final String ENDPOINT = "https://oss-cn-chengdu.aliyuncs.com";
 
