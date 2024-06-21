@@ -60,12 +60,6 @@
 			<artifactId>mybatis-plus-spring-boot3-starter</artifactId>
 			<version>3.5.7</version>
 		</dependency>
-		<!--	mybatis plus test-->
-		<dependency>
-			<groupId>com.baomidou</groupId>
-			<artifactId>mybatis-plus-boot-starter-test</artifactId>
-			<version>3.5.7</version>
-		</dependency>
 	</dependencies>
 
 	<build>
