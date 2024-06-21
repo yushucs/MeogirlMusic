@@ -6,6 +6,12 @@ spring:
     username: msql
     password: aEtM2Z63!xA2YRs
     driver-class-name: com.mysql.cj.jdbc.Driver
+  data:
+    redis:
+      port: 6379
+      host: supengcs.redis.cn-chengdu.rds.aliyuncs.com
+      username: myredis
+      password: yu@2bQWWhkNVY9j
 mybatis-plus:
   mapper-locations: classpath:/mapper/*.xml               # 可选，指定XML映射文件位置
   type-aliases-package: com.example.meogirlmusic.entity   # 可选，指定实体类所在包

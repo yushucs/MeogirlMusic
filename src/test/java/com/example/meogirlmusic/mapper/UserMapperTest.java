@@ -30,4 +30,22 @@ public class UserMapperTest {
                 .eq(User::getEmail, email);
         System.out.println(userMapper.selectOne(queryWrapper));
     }
+
+    @Test
+    public void findByUsername() {
+        String username = "Test";
+        System.out.println(userMapper.selectOne(new LambdaQueryWrapper<User>().eq(User::getUsername, username)));
+    }
+
+    @Test
+    public void updateUsername() {
+//        String username = "test";
+//        User user = userMapper.selectOne(new LambdaQueryWrapper<User>().eq(User::getUsername, username));
+//        user.setGender("男");
+//        user.setAvatar("test_path");
+        User user = new User();
+        user.setId(1804051786435624962L);
+        user.setUsername("music");
+        userMapper.updateById(user);
+    }
 }

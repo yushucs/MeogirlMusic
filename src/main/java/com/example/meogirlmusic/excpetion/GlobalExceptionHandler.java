@@ -1,0 +1,17 @@
+package com.example.meogirlmusic.excpetion;
+
+
+import com.example.meogirlmusic.common.net.ErrorMessage;
+import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+@RestControllerAdvice
+public class GlobalExceptionHandler {
+
+    @ExceptionHandler(Exception.class)
+    public String handleException(Exception e){
+        e.printStackTrace();
+        return new ErrorMessage(StringUtils.hasLength(e.getMessage())? e.getMessage() : "操作失败").getMessage();
+    }
+}

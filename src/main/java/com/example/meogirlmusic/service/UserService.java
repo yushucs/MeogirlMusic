@@ -7,4 +7,12 @@ public interface UserService {
     User findByEmail(String email);
     // 注册
     boolean register(String email, String username, String password);
+    // 更新
+    boolean update(User user);
+
+    boolean updateAvatar(String avatarUrl);
+
+    User findById(Long id);
+
+    boolean updatePwd(User user, String newPwd);
 }
