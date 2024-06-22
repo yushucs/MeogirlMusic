@@ -9,6 +9,7 @@ import com.example.meogirlmusic.entity.User;
 import com.example.meogirlmusic.service.UserService;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import lombok.RequiredArgsConstructor;
 import org.hibernate.validator.constraints.URL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -17,6 +18,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -24,17 +26,12 @@ import java.util.concurrent.TimeUnit;
 
 @Validated
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/users")
+@RequiredArgsConstructor(onConstructor_ = {@Autowired})
 public class UserController {
 
     private final UserService userService;
     private final StringRedisTemplate stringRedisTemplate;
-
-    @Autowired
-    public UserController(UserService userService, StringRedisTemplate stringRedisTemplate) {
-        this.userService = userService;
-        this.stringRedisTemplate = stringRedisTemplate;
-    }
 
     @PostMapping(value = "/login")
     public String login(@RequestParam @Email String email, @RequestParam @NotBlank String password) {
@@ -61,14 +58,12 @@ public class UserController {
         return new ErrorMessage("密码错误").getMessage();
     }
 
-    @PostMapping(value = "/register")
-    public String register(@RequestParam @Email String email, @RequestParam @NotBlank String username, @RequestParam @NotBlank String password) {
-        User res = userService.findByEmail(email);
-        if (res != null) {
-            return new ErrorMessage("该邮箱已被注册").getMessage();
-        }
+    @PostMapping
+    public String register(@RequestParam @Email String email,
+                           @RequestParam @NotBlank String username,
+                           @RequestParam @NotBlank String password) {
 
-        if (userService.register(email, username, password)) {
+        if (userService.register(User.builder().email(email).password(Md5Util.getMD5String(password)).username(username).build())) {
             return new SuccessMessage<>("注册成功").getMessage();
         } else {
             return new ErrorMessage("注册失败，请稍后尝试").getMessage();
@@ -77,7 +72,8 @@ public class UserController {
 
     @PutMapping("/update")
     public String update(@RequestBody User user) {
-        if (userService.update(user)) {
+        user.setUpdateTime(LocalDateTime.now());
+        if (userService.updateById(user)) {
             return new SuccessMessage<>("更新成功").getMessage();
         } else {
             return new ErrorMessage("更新失败，请稍后尝试").getMessage();
@@ -107,7 +103,7 @@ public class UserController {
         // 验证原密码
         Map<String, Object> map = ThreadLocalUtil.get();
         Long id = (Long) map.get("id");
-        User loginUser = userService.findById(id);
+        User loginUser = userService.getById(id);
         if (!Md5Util.checkPassword(oldPwd, loginUser.getPassword())) {
             return new ErrorMessage("原密码错误").getMessage();
         }
@@ -132,7 +128,13 @@ public class UserController {
         Map<String, Object> map = JwtUtil.parseToken(token);
         Long id = (Long) map.get("id");
 
-        User user = userService.findById(id);
+        User user = userService.getById(id);
+        return new SuccessMessage<>("查询成功", user).getMessage();
+    }
+
+    @GetMapping("{id}")
+    public String userInfo(@PathVariable("id") Long id) {
+        User user = userService.getById(id);
         return new SuccessMessage<>("查询成功", user).getMessage();
     }
 }

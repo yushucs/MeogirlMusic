@@ -2,11 +2,13 @@ package com.example.meogirlmusic.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.meogirlmusic.common.utils.Md5Util;
 import com.example.meogirlmusic.common.utils.ThreadLocalUtil;
 import com.example.meogirlmusic.entity.User;
 import com.example.meogirlmusic.mapper.UserMapper;
 import com.example.meogirlmusic.service.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,14 +16,11 @@ import java.time.LocalDateTime;
 import java.util.Map;
 
 @Service
-public class UserServiceImpl implements UserService {
+@RequiredArgsConstructor(onConstructor_ = {@Autowired})
+public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
 
     private final UserMapper userMapper;
 
-    @Autowired
-    public UserServiceImpl(UserMapper userMapper) {
-        this.userMapper = userMapper;
-    }
 
     @Override
     public User findByEmail(String email) {
@@ -30,22 +29,6 @@ public class UserServiceImpl implements UserService {
         return userMapper.selectOne(queryWrapper);
     }
 
-    @Override
-    public boolean register(String email, String username, String password) {
-        User user = User.builder()
-                .email(email)
-                .username(username)
-                .password(Md5Util.getMD5String(password))
-                .build();
-        // 插入成功返回 true
-        return userMapper.insert(user) > 0;
-    }
-
-    @Override
-    public boolean update(User user) {
-        user.setUpdateTime(LocalDateTime.now());
-        return userMapper.updateById(user) > 0;
-    }
 
     @Override
     public boolean updateAvatar(String avatarUrl) {
@@ -61,14 +44,25 @@ public class UserServiceImpl implements UserService {
         return userMapper.update(updateWrapper) > 0;
     }
 
-    @Override
-    public User findById(Long id) {
-        return userMapper.selectById(id);
-    }
 
     @Override
     public boolean updatePwd(User user, String newPwd) {
         user.setPassword(Md5Util.getMD5String(newPwd));
         return userMapper.updateById(user) > 0;
+    }
+
+    @Override
+    public boolean register(User user) {
+        // 查询邮箱是否被注册
+        User res = findByEmail(user.getEmail());
+        if (res != null) {
+            return false;
+        }
+
+        // 注册
+        user.setCreateTime(LocalDateTime.now());
+        user.setUpdateTime(LocalDateTime.now());
+        save(user);
+        return true;
     }
 }

@@ -1,7 +1,7 @@
 package com.example.meogirlmusic.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.example.meogirlmusic.entity.Album;
+import com.example.meogirlmusic.entity.Song;
 
-public interface AlbumService extends IService<Album> {
+public interface SongService extends IService<Song> {
 }
